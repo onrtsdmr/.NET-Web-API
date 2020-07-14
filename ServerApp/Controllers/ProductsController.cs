@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 using ServerApp.Data;
+using ServerApp.DTO;
+using ServerApp.Helper;
 using ServerApp.Models;
 
 namespace ServerApp.Controllers {
@@ -24,7 +26,10 @@ namespace ServerApp.Controllers {
         [HttpGet]
         public async Task<ActionResult> GetProducts () {
             try {
-                var products = await _context.Products.ToListAsync ();
+                var products = await _context
+                    .Products
+                    .Select (p => ProductDTOHelper.ProductToDTO (p))
+                    .ToListAsync ();
                 return Ok (products);
             } catch (System.Exception) {
 
@@ -34,69 +39,68 @@ namespace ServerApp.Controllers {
         // localhost:5001/api/products/{id}
         [HttpGet ("{id}")]
         public async Task<IActionResult> GetProductById (int id) {
-            var p = await _context.Products.FirstOrDefaultAsync(i => i.ProductId == id);
+            var p = await _context
+                .Products
+                .FindAsync(id);
 
             if (p == null) {
                 return NotFound ();
             }
 
-            return Ok (p);
+            return Ok (ProductDTOHelper.ProductToDTO(p));
         }
 
         // localhost:5001/api/products
         [HttpPost]
-        public async Task<IActionResult> CreateProductAsync (Product entity) {
+        public async Task<IActionResult> CreateProduct (Product entity) {
             try {
-                await _context.Products.AddAsync(entity);
-                await _context.SaveChangesAsync();
+                _context.Products.Add (entity);
+                await _context.SaveChangesAsync ();
                 foreach (var item in _context.Products) {
                     System.Console.WriteLine (item.Name);
                 }
-                return CreatedAtAction(nameof(GetProductById),new {id = entity.ProductId}, entity);
+                return CreatedAtAction (nameof (GetProductById), new { id = entity.ProductId }, ProductDTOHelper.ProductToDTO (entity));
             } catch (System.Exception) {
                 return BadRequest (entity);
             }
         }
-        
-        //localhost/api/products/{id}
-        [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateProduct(int id, Product entitiy){
-            if(id!=entitiy.ProductId){
-                return BadRequest();
-            }
-            
-            var product = await _context.Products.FindAsync(id);
 
-            if(product == null) return NotFound();
+        //localhost/api/products/{id}
+        [HttpPut ("{id}")]
+        public async Task<IActionResult> UpdateProduct (int id, Product entitiy) {
+            if (id != entitiy.ProductId) {
+                return BadRequest ();
+            }
+
+            var product = await _context.Products.FindAsync (id);
+
+            if (product == null) return NotFound ();
 
             product.Name = entitiy.Name;
             product.Price = entitiy.Price;
             product.IsApproved = entitiy.IsApproved;
 
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (System.Exception)
-            {
-                
-                return NotFound();
+            try {
+                await _context.SaveChangesAsync ();
+            } catch (System.Exception) {
+
+                return NotFound ();
             }
 
-            return NoContent();
+            return NoContent ();
         }
 
         // localhost:5001/api/products/{id}
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteProduct(int id){
-            var product = await _context.Products.FindAsync(id);
+        [HttpDelete ("{id}")]
+        public async Task<IActionResult> DeleteProduct (int id) {
+            var product = await _context.Products.FindAsync (id);
 
-            if(product == null) return BadRequest();
+            if (product == null) return BadRequest ();
 
-            _context.Products.Remove(product);
-            await _context.SaveChangesAsync();
+            _context.Products.Remove (product);
+            await _context.SaveChangesAsync ();
 
-            return NoContent();
+            return NoContent ();
         }
 
         // You can also add the id parameter in the body section.

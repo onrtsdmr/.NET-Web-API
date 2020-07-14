@@ -1,11 +1,10 @@
-namespace ServerApp.Models
+namespace ServerApp.DTO
 {
-    public class Product
+    public class ProductDTO
     {
         public int ProductId{ get; set; }
         public string Name { get; set; }
         public decimal Price { get; set; }
         public bool IsApproved { get; set; }
-        public string Secret { get; set; }
     }
 }
