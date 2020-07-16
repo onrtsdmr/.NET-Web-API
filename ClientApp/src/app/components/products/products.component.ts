@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Model, Product } from '../../Model';
+import { Model, Product } from '../../models/Model';
 import { ProductService } from 'src/app/services/product.service';
 
 @Component({
@@ -11,14 +11,24 @@ export class ProductsComponent implements OnInit {
 
   products: Product[];
   categoryName: string;
-  constructor(private productService: ProductService) 
+  selectedProduct: Product;
+
+  constructor(private productService: ProductService)
   {
 
   }
 
-  ngOnInit(): void 
+  ngOnInit(): void
   {
     this.products = this.productService.getProducts();
     this.categoryName = this.productService.getCategoryName();
+  }
+
+  onSelectProduct(product: Product){
+    this.selectedProduct = product;
+  }
+
+  deleteProduct(product: Product){
+    this.productService.deleteProduct(product);
   }
 }

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ProductService } from 'src/app/services/product.service';
-import { Product } from 'src/app/Model';
+import { Product } from 'src/app/models/Model';
 
 @Component({
   selector: 'product-form',
@@ -9,22 +9,18 @@ import { Product } from 'src/app/Model';
 })
 export class ProductFormComponent implements OnInit {
 
-  constructor(private productService: ProductService) 
-  {
-    
-  }
+  constructor(private productService: ProductService){}
 
-  ngOnInit(): void {
-  }
-  
+  ngOnInit(): void {  }
+
   addProduct(name: string, price: number, isActive: boolean){
     console.log(name);
     console.log(price);
     console.log(isActive);
 
 
-    const p = new Product(this.productService.getProducts().length + 1, name,  price, isActive);
-    this.productService.addProduct(p);
+    const p = new Product(0, name,  price, isActive);
+    this.productService.saveProduct(p);
 
   }
 
