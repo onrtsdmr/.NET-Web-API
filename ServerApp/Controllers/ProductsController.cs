@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -12,6 +12,7 @@ using ServerApp.Models;
 
 namespace ServerApp.Controllers {
     // localhost:5001/api/products
+    [Authorize]
     [ApiController]
     [Route ("api/[controller]")]
     public class ProductsController : ControllerBase {
@@ -24,6 +25,7 @@ namespace ServerApp.Controllers {
 
         // localhost:5001/api/products
         [HttpGet]
+        [AllowAnonymous]
         public async Task<ActionResult> GetProducts () {
             try {
                 var products = await _context

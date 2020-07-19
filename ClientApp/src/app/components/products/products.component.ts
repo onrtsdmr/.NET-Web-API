@@ -20,7 +20,20 @@ export class ProductsComponent implements OnInit {
 
   ngOnInit(): void
   {
-    this.products = this.productService.getProducts();
+    this.getProducts();
+    this.getCategoryName();
+  }
+
+  getProducts(){
+    this.productService.getProducts().subscribe(products=>{
+      this.products = products;
+    },error=>{
+      console.log(error);
+    }
+    );
+  }
+
+  getCategoryName(){
     this.categoryName = this.productService.getCategoryName();
   }
 
@@ -29,6 +42,10 @@ export class ProductsComponent implements OnInit {
   }
 
   deleteProduct(product: Product){
-    this.productService.deleteProduct(product);
+    this.productService
+    .deleteProduct(product)
+    .subscribe(p=>{
+      this.products.splice(this.products.findIndex(x=>x.productId == product.productId),1)
+    });
   }
 }

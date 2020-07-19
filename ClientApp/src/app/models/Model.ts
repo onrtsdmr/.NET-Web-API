@@ -15,14 +15,14 @@ export class Model{
 }
 
 export class Product{
-    id: number;
+    productId: number;
     name: string;
     price: number;
     isActive: boolean;
 
 
-    constructor(id: number, name: string, price: number, isActive: boolean){
-        this.id = id;
+    constructor(productId: number, name: string, price: number, isActive: boolean){
+        this.productId = productId;
         this.name = name;
         this.price = price;
         this.isActive = isActive;

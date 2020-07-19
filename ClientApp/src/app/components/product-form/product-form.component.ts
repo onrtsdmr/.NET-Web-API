@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { ProductService } from 'src/app/services/product.service';
 import { Product } from 'src/app/models/Model';
 
@@ -9,6 +9,7 @@ import { Product } from 'src/app/models/Model';
 })
 export class ProductFormComponent implements OnInit {
 
+  @Input() products: Product[];
   constructor(private productService: ProductService){}
 
   ngOnInit(): void {  }
@@ -19,9 +20,8 @@ export class ProductFormComponent implements OnInit {
     console.log(isActive);
 
 
-    const p = new Product(0, name,  price, isActive);
-    this.productService.saveProduct(p);
-
+    const p = new Product(this.products.length + 1, name,  price, isActive);
+    this.productService.addProduct(p).subscribe(product=> this.products.push(product));
   }
 
 }
