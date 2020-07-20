@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -16,9 +17,10 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
-
+using Microsoft.AspNetCore.Diagnostics;
 using ServerApp.Data;
 using ServerApp.Models;
+using Microsoft.AspNetCore.Http;
 
 namespace ServerApp {
     public class Startup {
@@ -87,6 +89,23 @@ namespace ServerApp {
         public void Configure (IApplicationBuilder app, IWebHostEnvironment env) {
             if (env.IsDevelopment ()) {
                 app.UseDeveloperExceptionPage ();
+            }else{
+                app.UseExceptionHandler(appError=>{
+                    appError.Run(async context=>{
+                        context.Response.StatusCode = (int) HttpStatusCode.InternalServerError;
+                        context.Response.ContentType = "application/json";
+
+                        var exception = context.Features.Get<IExceptionHandlerFeature>();
+                        if(exception != null){
+                            // loglama => nlog, elmah
+
+                            await context.Response.WriteAsync(new ErrorDetails(){
+                                StatusCode = context.Response.StatusCode,
+                                Message = exception.Error.Message
+                            }.ToString());
+                        }
+                    });
+                });
             }
 
             // app.UseHttpsRedirection ();
