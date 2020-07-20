@@ -5,6 +5,7 @@ import { MemberListComponent } from './components/member-list/member-list.compon
 import { FriendListComponent } from './components/friend-list/friend-list.component';
 import { MessagesComponent } from './components/messages/messages.component';
 import { NotfoundComponent } from './components/notfound/notfound.component';
+import { AuthGuard } from './guards/auth.guard';
 
 
 const routes: Routes = [
@@ -18,19 +19,23 @@ const routes: Routes = [
   },
   {
     path: "members",
-    component: MemberListComponent
+    component: MemberListComponent,
+    canActivate: [AuthGuard]
   },
   {
     path: "friends",
-    component: FriendListComponent
+    component: FriendListComponent,
+    canActivate: [AuthGuard]
   },
   {
     path: "messages",
-    component: MessagesComponent
+    component: MessagesComponent,
+    canActivate: [AuthGuard]
   },
   {
     path: "**",
-    component: NotfoundComponent
+    component: NotfoundComponent,
+    canActivate: [AuthGuard]
   },
 ];
 

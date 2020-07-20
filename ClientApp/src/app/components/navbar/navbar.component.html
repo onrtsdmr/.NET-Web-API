@@ -7,7 +7,7 @@
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="navbarToggler">
-        <ul class="navbar-nav mr-auto">
+        <ul *ngIf="loggedIn()" class="navbar-nav mr-auto">
           <li class="navbar-nav">
             <a [routerLink]="['/members']" routerLinkActive="active"  class="nav-link">Members</a>
           </li>
@@ -27,7 +27,7 @@
           </li>
         </ul>
 
-        <form *ngIf="!loggedIn()" #form="ngForm" class="form-inline mt-2 mt-md-0" (ngSubmit)="login()">
+        <form *ngIf="!loggedIn()" #form="ngForm" class="form-inline mt-2 mt-md-0 ml-auto" (ngSubmit)="login()">
           <input #username="ngModel" class="form-control form-control-sm mr-sm-2" required type="text" name="username"
             placeholder="Username" [(ngModel)]="model.username">
           <input #password="ngModel" class="form-control form-control-sm mr-sm-2" required type="password" name="password"
