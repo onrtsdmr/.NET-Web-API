@@ -8,6 +8,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
+
+using ServerApp.CustomFilters;
 using ServerApp.DTO;
 using ServerApp.Models;
 
@@ -26,6 +28,7 @@ namespace ServerApp.Controllers {
             this._configuration = configuration;
         }
 
+        [ValidModel]
         [HttpPost ("register")]
         public async Task<IActionResult> Register (UserForRegisterDTO model) {
             var user = new User {
@@ -45,6 +48,7 @@ namespace ServerApp.Controllers {
         }
 
         [HttpPost ("login")]
+        [ValidModel]
         public async Task<IActionResult> Login (UserForLoginDTO model) {
             var user = await _userManager.FindByNameAsync (model.UserName);
 
@@ -54,27 +58,25 @@ namespace ServerApp.Controllers {
 
             if (!result.Succeeded) return Unauthorized ();
 
-            return Ok (new { token = GenerateJwtToken(user) });
+            return Ok (new { token = GenerateJwtToken (user) });
         }
 
-        private string GenerateJwtToken(User user)
-        {
-            var tokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.ASCII.GetBytes(_configuration.GetSection("AppSettings:Secret").Value);
+        private string GenerateJwtToken (User user) {
+            var tokenHandler = new JwtSecurityTokenHandler ();
+            var key = Encoding.ASCII.GetBytes (_configuration.GetSection ("AppSettings:Secret").Value);
 
-            var tokenDescriptor = new SecurityTokenDescriptor
-            {
-                Subject = new ClaimsIdentity(new Claim[]{
-                    new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
-                    new Claim(ClaimTypes.Name, user.Name.ToString()),                    
+            var tokenDescriptor = new SecurityTokenDescriptor {
+                Subject = new ClaimsIdentity (new Claim[] {
+                new Claim (ClaimTypes.NameIdentifier, user.Id.ToString ()),
+                new Claim (ClaimTypes.Name, user.Name.ToString ()),
                 }),
-                Expires = DateTime.UtcNow.AddDays(1), // 1 gün geçerli
-                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+                Expires = DateTime.UtcNow.AddDays (1), // 1 gün geçerli
+                SigningCredentials = new SigningCredentials (new SymmetricSecurityKey (key), SecurityAlgorithms.HmacSha256Signature)
             };
 
-            var token = tokenHandler.CreateToken(tokenDescriptor);
+            var token = tokenHandler.CreateToken (tokenDescriptor);
 
-            return tokenHandler.WriteToken(token);
+            return tokenHandler.WriteToken (token);
         }
     }
 }

@@ -20,7 +20,7 @@ export class NavbarComponent implements OnInit {
         this.router.navigate(['/members']);
       },
       (error) => {
-        console.log('Login baaşarıısz.');
+        console.log(error);
       }
     );
   }
