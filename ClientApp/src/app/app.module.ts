@@ -7,6 +7,8 @@ import { NavbarComponent } from './components/navbar/navbar.component';
 import { ProductsComponent } from './components/products/products.component';
 import { ProductFormComponent } from './components/product-form/product-form.component';
 import { ProductDetailsComponent } from './components/product-details/product-details.component';
+import { FormsModule } from "@angular/forms";
+import { RegisterComponent } from './components/register/register.component';
 
 @NgModule({
   declarations: [
@@ -14,12 +16,14 @@ import { ProductDetailsComponent } from './components/product-details/product-de
     NavbarComponent,
     ProductsComponent,
     ProductFormComponent,
-    ProductDetailsComponent
+    ProductDetailsComponent,
+    RegisterComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
-    HttpClientModule
+    HttpClientModule,
+    FormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

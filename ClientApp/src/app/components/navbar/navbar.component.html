@@ -18,18 +18,41 @@
             <a href="" class="nav-link">Messages</a>
           </li>
         </ul>
-        <ul class="navbar-nav ml-auto">
+        <ul *ngIf="loggedIn()" class="navbar-nav ml-auto">
           <li class="navbar-nav">
-            <a href="" class="nav-link">Login</a>
+            <a href="" class="nav-link">username</a>
           </li>
           <li class="navbar-nav">
-            <a href="" class="nav-link">Register</a>
-          </li>
-          <li class="navbar-nav">
-            <a href="" class="nav-link">Logout</a>
+            <a (click)="logout()" class="nav-link">Logout</a>
           </li>
         </ul>
+
+        <form *ngIf="!loggedIn()" #form="ngForm" class="form-inline mt-2 mt-md-0" (ngSubmit)="login()">
+          <input #username="ngModel" class="form-control form-control-sm mr-sm-2" required type="text" name="username"
+            placeholder="Username" [(ngModel)]="model.username">
+          <input #password="ngModel" class="form-control form-control-sm mr-sm-2" required type="password" name="password"
+            placeholder="Password" [(ngModel)]="model.password">
+          <button [disabled]="form.invalid" class="btn btn-sm btn-success my-2 my-sm-0" type="submit">Login</button>
+        </form>
+
       </div>
     </div>
   </div>
-</nav>
+
+  <!-- <div style="margin-top: 100px;">
+    <p>Form valid: {{form.valid}}</p>
+    <p>Form invalid: {{form.valid}}</p>
+    <p>Form touched: {{form.touched}}</p>
+    <p>Form dirty: {{form.dirty}}</p>
+    <br>
+    <p>Username valid: {{username.valid}}</p>
+    <p>Username invalid: {{username.invalid}}</p>
+    <p>Username touched: {{username.touched}}</p>
+    <p>Username dirty: {{username.dirty}}</p>
+    <br>
+    <p>Password valid: {{password.valid}}</p>
+    <p>Password invalid: {{password.invalid}}</p>
+    <p>Password touched: {{password.touched}}</p>
+    <p>Password dirty: {{password.dirty}}</p>
+  </div> -->
+</nav> 

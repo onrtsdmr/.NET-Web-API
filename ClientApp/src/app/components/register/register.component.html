@@ -1,0 +1,83 @@
+<div class="container">
+    <div class="row py-5 mt-4 align-items-center">
+        <!-- For Demo Purpose -->
+        <div class="col-md-5 pr-lg-5 mb-5 mb-md-0">
+            <img src="https://res.cloudinary.com/mhmd/image/upload/v1569543678/form_d9sh6m.svg" alt=""
+                class="img-fluid mb-3 d-none d-md-block">
+            <h1>Create an Account</h1>
+            <p class="font-italic text-muted mb-0">Create a minimal registeration page using Bootstrap 4 HTML form
+                elements.</p>
+            <p class="font-italic text-muted">
+                Snippet By
+                <a href="https://bootstrapious.com" class="text-muted">
+                    <u>Bootstrapious</u>
+                </a>
+            </p>
+        </div>
+
+        <!-- Registeration Form -->
+        <div class="col-md-7 col-lg-6 ml-auto">
+            <form (ngSubmit)="register()" #form="ngForm">
+                <div class="row">
+                    <!-- First Name -->
+                    <div class="input-group col-lg-12 mb-4">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text bg-white px-4 border-md border-right-0">
+                                <i class="fa fa-user text-muted"></i>
+                            </span>
+                        </div>
+                        <input [(ngModel)]="model.name" #name="ngModel" minlength="5" required type="text" name="name"
+                            placeholder="Name" class="form-control bg-white border-left-0 border-md">
+                    </div>
+                    <div *ngIf="name.invalid && name.touched" class="alert alert-danger">
+                        <p *ngIf="name.errors.required">Name is required</p>
+                        <p *ngIf="name.errors.minlength">minLength 5</p>
+                    </div>
+
+                    <!-- UserName -->
+                    <div class="input-group col-lg-12 mb-4">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text bg-white px-4 border-md border-right-0">
+                                <i class="fa fa-user text-muted"></i>
+                            </span>
+                        </div>
+                        <input [(ngModel)]="model.username" required type="text" name="username" placeholder="Username"
+                            class="form-control bg-white border-left-0 border-md">
+                    </div>
+
+                    <!-- Email Address -->
+                    <div class="input-group col-lg-12 mb-4">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text bg-white px-4 border-md border-right-0">
+                                <i class="fa fa-envelope text-muted"></i>
+                            </span>
+                        </div>
+                        <input [(ngModel)]="model.email" email required type="email" name="email"
+                            placeholder="Email Address" class="form-control bg-white border-left-0 border-md">
+                    </div>
+
+                    <!-- Password -->
+                    <div class="input-group col-lg-12 mb-4">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text bg-white px-4 border-md border-right-0">
+                                <i class="fa fa-lock text-muted"></i>
+                            </span>
+                        </div>
+                        <input [(ngModel)]="model.password" required type="password" name="password"
+                            placeholder="Password" class="form-control bg-white border-left-0 border-md">
+                    </div>
+
+                    <!-- Validation Control -->
+                    <div asp-validation-summary="All" class="text-danger"></div>
+
+                    <!-- Submit Button -->
+                    <div class="form-group col-lg-12 mx-auto mb-0">
+                        <button [disabled]="form.invalid" type="submit" class="btn btn-primary btn-block py-2">
+                            <span class="font-weight-bold">Create your account</span>
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
