@@ -51,8 +51,6 @@ namespace ServerApp.Controllers {
         [ValidModel]
         public async Task<IActionResult> Login (UserForLoginDTO model) {
 
-            throw new Exception ("Interval Exception");
-
             var user = await _userManager.FindByNameAsync (model.UserName);
 
             if (user == null) return BadRequest (new { message = "Username is incorret." });
