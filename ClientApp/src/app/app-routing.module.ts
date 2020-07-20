@@ -6,6 +6,7 @@ import { FriendListComponent } from './components/friend-list/friend-list.compon
 import { MessagesComponent } from './components/messages/messages.component';
 import { NotfoundComponent } from './components/notfound/notfound.component';
 import { AuthGuard } from './guards/auth.guard';
+import { RegisterComponent } from './components/register/register.component';
 
 
 const routes: Routes = [
@@ -31,6 +32,10 @@ const routes: Routes = [
     path: "messages",
     component: MessagesComponent,
     canActivate: [AuthGuard]
+  },
+  {
+    path: "register",
+    component: RegisterComponent
   },
   {
     path: "**",

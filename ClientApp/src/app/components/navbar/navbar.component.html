@@ -20,7 +20,7 @@
         </ul>
         <ul *ngIf="loggedIn()" class="navbar-nav ml-auto">
           <li class="navbar-nav">
-            <a href="" class="nav-link">username</a>
+            <a href="" class="nav-link">{{ authService.decodedToken.unique_name }}</a>
           </li>
           <li class="navbar-nav">
             <a (click)="logout()" class="nav-link">Logout</a>
@@ -33,6 +33,7 @@
           <input #password="ngModel" class="form-control form-control-sm mr-sm-2" required type="password" name="password"
             placeholder="Password" [(ngModel)]="model.password">
           <button [disabled]="form.invalid" class="btn btn-sm btn-success my-2 my-sm-0" type="submit">Login</button>
+          <a [routerLink]="['/register']" routerLinkActive="router-link-active"  class="btn btn-sm btn-success ml-2 my-2 my-sm-0">Register</a>
         </form>
 
       </div>
