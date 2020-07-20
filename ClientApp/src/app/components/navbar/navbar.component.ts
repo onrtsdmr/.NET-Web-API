@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from 'src/app/services/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'navbar',
@@ -8,25 +9,30 @@ import { AuthService } from 'src/app/services/auth.service';
 })
 export class NavbarComponent implements OnInit {
   model: any = {};
-  constructor(private _authService: AuthService) {}
+  constructor(private authService: AuthService, private router: Router) {}
 
   ngOnInit(): void {}
 
   login() {
-    this._authService.login(this.model).subscribe(next=>{
-      console.log("login başarılı");
-    }, error=>{
-      console.log("Login baaşarıısz.");
-    });
+    this.authService.login(this.model).subscribe(
+      (next) => {
+        console.log('login başarılı');
+        this.router.navigate(['/members']);
+      },
+      (error) => {
+        console.log('Login baaşarıısz.');
+      }
+    );
   }
 
-  loggedIn(){
-    const token = localStorage.getItem("token");
-    return token?true:false;
+  loggedIn() {
+    const token = localStorage.getItem('token');
+    return token ? true : false;
   }
 
-  logout(){
-    localStorage.removeItem("token");
-    console.log("logout");
+  logout() {
+    localStorage.removeItem('token');
+    console.log('logout');
+    this.router.navigate(['/home']);
   }
 }

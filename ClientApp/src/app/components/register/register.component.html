@@ -29,10 +29,10 @@
                         <input [(ngModel)]="model.name" #name="ngModel" minlength="5" required type="text" name="name"
                             placeholder="Name" class="form-control bg-white border-left-0 border-md">
                     </div>
-                    <div *ngIf="name.invalid && name.touched" class="alert alert-danger">
+                    <!-- <div *ngIf="name.invalid && name.touched" class="alert alert-danger">
                         <p *ngIf="name.errors.required">Name is required</p>
                         <p *ngIf="name.errors.minlength">minLength 5</p>
-                    </div>
+                    </div> -->
 
                     <!-- UserName -->
                     <div class="input-group col-lg-12 mb-4">

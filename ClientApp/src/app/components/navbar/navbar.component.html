@@ -1,7 +1,7 @@
 <nav>
   <div class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top">
     <div class="container">
-      <a href="" class="navbar-brand">SocialApp</a>
+      <a [routerLink]="['/home']"  class="navbar-brand">SocialApp</a>
 
       <button class="navbar-toggler" data-toggle="collapse" data-target=#navbarToggler>
         <span class="navbar-toggler-icon"></span>
@@ -9,14 +9,14 @@
       <div class="collapse navbar-collapse" id="navbarToggler">
         <ul class="navbar-nav mr-auto">
           <li class="navbar-nav">
-            <a href="" class="nav-link active">Home</a>
+            <a [routerLink]="['/members']" routerLinkActive="active"  class="nav-link">Members</a>
           </li>
           <li class="navbar-nav">
-            <a href="" class="nav-link">Users</a>
+            <a [routerLink]="['/friends']" routerLinkActive="active" class="nav-link">Friends</a>
           </li>
           <li class="navbar-nav">
-            <a href="" class="nav-link">Messages</a>
-          </li>
+            <a [routerLink]="['/messages']" routerLinkActive="active" class="nav-link">Messages</a>
+          </li>          
         </ul>
         <ul *ngIf="loggedIn()" class="navbar-nav ml-auto">
           <li class="navbar-nav">
