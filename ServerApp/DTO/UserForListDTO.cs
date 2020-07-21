@@ -1,7 +1,5 @@
 using System;
 
-using ServerApp.Models;
-
 namespace ServerApp.DTO {
     public class UserForListDTO {
         public int Id { get; set; }
@@ -13,6 +11,6 @@ namespace ServerApp.DTO {
         public DateTime LastActive { get; set; }
         public string City { get; set; }
         public string Country { get; set; }
-        public Image Images { get; set; }
+        public ImagesForDetails Images { get; set; }
     }
 }

@@ -7,7 +7,6 @@ using Microsoft.EntityFrameworkCore;
 
 using ServerApp.Data;
 using ServerApp.DTO;
-using ServerApp.Helper;
 using ServerApp.Models;
 
 namespace ServerApp.Controllers {
@@ -30,7 +29,7 @@ namespace ServerApp.Controllers {
             try {
                 var products = await _context
                     .Products
-                    .Select (p => ProductDTOHelper.ProductToDTO (p))
+                    .Select (p => ProductToDTO (p))
                     .ToListAsync ();
                 return Ok (products);
             } catch (System.Exception) {
@@ -49,7 +48,7 @@ namespace ServerApp.Controllers {
                 return NotFound ();
             }
 
-            return Ok (ProductDTOHelper.ProductToDTO(p));
+            return Ok (ProductToDTO(p));
         }
 
         // localhost:5001/api/products
@@ -61,7 +60,7 @@ namespace ServerApp.Controllers {
                 foreach (var item in _context.Products) {
                     System.Console.WriteLine (item.Name);
                 }
-                return CreatedAtAction (nameof (GetProductById), new { id = entity.ProductId }, ProductDTOHelper.ProductToDTO (entity));
+                return CreatedAtAction (nameof (GetProductById), new { id = entity.ProductId }, ProductToDTO (entity));
             } catch (System.Exception) {
                 return BadRequest (entity);
             }
@@ -118,5 +117,14 @@ namespace ServerApp.Controllers {
 
         //     return NoContent();
         // }
+
+        public static ProductDTO ProductToDTO (Product p) {
+            return new ProductDTO () {
+                ProductId = p.ProductId,
+                Name = p.Name,
+                Price = p.Price,
+                IsApproved = p.IsApproved
+            };
+        }
     }
 }

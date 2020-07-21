@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using ServerApp.Models;
 
 namespace ServerApp.DTO {
     public class UserForDetailsDTO {
@@ -15,6 +14,6 @@ namespace ServerApp.DTO {
         public string Country { get; set; }
         public string Introduction { get; set; }
         public string Hobbies { get; set; }
-        public List<Image> Images { get; set; }
+        public List<ImagesForDetails> Images { get; set; }
     }
 }

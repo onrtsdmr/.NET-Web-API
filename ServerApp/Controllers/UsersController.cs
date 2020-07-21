@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -14,8 +15,10 @@ namespace ServerApp.Controllers {
     [ApiController]
     public class UsersController : ControllerBase {
         private readonly ISocialRepository _repository;
-        public UsersController (ISocialRepository repository) {
+        private readonly IMapper _mapper;
+        public UsersController (ISocialRepository repository, IMapper mapper) {
             this._repository = repository;
+            this._mapper = mapper;
         }
 
         // api/users
@@ -23,25 +26,9 @@ namespace ServerApp.Controllers {
         {
             var users = await _repository.GetUsers();
 
-            var list = new List<UserForListDTO>();
+            var result = _mapper.Map<IEnumerable<UserForListDTO>>(users);
 
-            foreach (var user in users)
-            {
-                list.Add(new UserForListDTO(){
-                    Id = user.Id,
-                    Name = user.Name,
-                    UserName = user.UserName,
-                    Gender  = user.Gender,
-                    Age = DateTime.Today.Year - user.DateOfBirth.Year,
-                    Created = user.Created,
-                    LastActive = user.LastActive,
-                    City = user.City,
-                    Country = user.Country,
-                    Images = user.Images.Where(i=> i.IsProfile == true).FirstOrDefault()
-                });
-            }
-
-            return Ok(list);
+            return Ok(result);
         }
 
         // api/users/id
@@ -49,7 +36,10 @@ namespace ServerApp.Controllers {
         public async Task<IActionResult> GetUser(int id)
         {
             var user = await _repository.GetUser(id);
-            return Ok(user);
+            
+            var result = _mapper.Map<UserForDetailsDTO>(user);
+
+            return Ok(result);
         }
     }
 }

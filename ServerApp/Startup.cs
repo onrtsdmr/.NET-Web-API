@@ -5,9 +5,13 @@ using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 
+using AutoMapper;
+
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -17,10 +21,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
-using Microsoft.AspNetCore.Diagnostics;
+
 using ServerApp.Data;
 using ServerApp.Models;
-using Microsoft.AspNetCore.Http;
 
 namespace ServerApp {
     public class Startup {
@@ -52,7 +55,7 @@ namespace ServerApp {
 
             services.AddDbContext<SocialContext> (x => x.UseMySql (@"server=localhost;port=3306;database=SocialDB;user=root;password=onur123123"));
             services.AddIdentity<User, Role> ().AddEntityFrameworkStores<SocialContext> ();
-            services.AddScoped<ISocialRepository, SocialRepository>();
+            services.AddScoped<ISocialRepository, SocialRepository> ();
             services.Configure<IdentityOptions> (
                 options => {
                     options.Password.RequireDigit = true;
@@ -70,7 +73,8 @@ namespace ServerApp {
 
                 }
             );
-            services.AddControllers ().AddNewtonsoftJson (options=> {
+            services.AddAutoMapper(typeof(Startup));
+            services.AddControllers ().AddNewtonsoftJson (options => {
                 options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
             });
             services.AddAuthentication (x => {
@@ -81,7 +85,7 @@ namespace ServerApp {
                 x.SaveToken = true;
                 x.TokenValidationParameters = new TokenValidationParameters {
                     ValidateIssuerSigningKey = true,
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(Configuration.GetSection("AppSettings:Secret").Value)),
+                    IssuerSigningKey = new SymmetricSecurityKey (Encoding.ASCII.GetBytes (Configuration.GetSection ("AppSettings:Secret").Value)),
                     ValidateIssuer = false,
                     ValidateAudience = false
                 };
@@ -92,21 +96,21 @@ namespace ServerApp {
         public void Configure (IApplicationBuilder app, IWebHostEnvironment env, UserManager<User> userManager) {
             if (env.IsDevelopment ()) {
                 app.UseDeveloperExceptionPage ();
-                SeedDatabase.Seed(userManager).Wait();
-            }else{
-                app.UseExceptionHandler(appError=>{
-                    appError.Run(async context=>{
+                SeedDatabase.Seed (userManager).Wait ();
+            } else {
+                app.UseExceptionHandler (appError => {
+                    appError.Run (async context => {
                         context.Response.StatusCode = (int) HttpStatusCode.InternalServerError;
                         context.Response.ContentType = "application/json";
 
-                        var exception = context.Features.Get<IExceptionHandlerFeature>();
-                        if(exception != null){
+                        var exception = context.Features.Get<IExceptionHandlerFeature> ();
+                        if (exception != null) {
                             // loglama => nlog, elmah
 
-                            await context.Response.WriteAsync(new ErrorDetails(){
+                            await context.Response.WriteAsync (new ErrorDetails () {
                                 StatusCode = context.Response.StatusCode,
-                                Message = exception.Error.Message
-                            }.ToString());
+                                    Message = exception.Error.Message
+                            }.ToString ());
                         }
                     });
                 });
