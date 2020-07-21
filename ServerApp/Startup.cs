@@ -52,6 +52,7 @@ namespace ServerApp {
 
             services.AddDbContext<SocialContext> (x => x.UseMySql (@"server=localhost;port=3306;database=SocialDB;user=root;password=onur123123"));
             services.AddIdentity<User, Role> ().AddEntityFrameworkStores<SocialContext> ();
+            services.AddScoped<ISocialRepository, SocialRepository>();
             services.Configure<IdentityOptions> (
                 options => {
                     options.Password.RequireDigit = true;
@@ -69,7 +70,9 @@ namespace ServerApp {
 
                 }
             );
-            services.AddControllers ().AddNewtonsoftJson ();
+            services.AddControllers ().AddNewtonsoftJson (options=> {
+                options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
+            });
             services.AddAuthentication (x => {
                 x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
                 x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -86,9 +89,10 @@ namespace ServerApp {
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure (IApplicationBuilder app, IWebHostEnvironment env) {
+        public void Configure (IApplicationBuilder app, IWebHostEnvironment env, UserManager<User> userManager) {
             if (env.IsDevelopment ()) {
                 app.UseDeveloperExceptionPage ();
+                SeedDatabase.Seed(userManager).Wait();
             }else{
                 app.UseExceptionHandler(appError=>{
                     appError.Run(async context=>{

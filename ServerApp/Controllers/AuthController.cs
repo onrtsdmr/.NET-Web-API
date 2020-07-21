@@ -3,29 +3,29 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
-
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
-
 using ServerApp.CustomFilters;
 using ServerApp.DTO;
 using ServerApp.Models;
 
-namespace ServerApp.Controllers {
+namespace ServerApp.Controllers
+{
     [ApiController]
-    [Route ("api/[controller]")]
-    public class UserController : ControllerBase {
-        private UserManager<User> _userManager;
-        private SignInManager<User> _signInManager;
-
+    [Route("api/[controller]")]
+    public class AuthController: ControllerBase
+    {
+        private readonly UserManager<User> _userManager;
+        private readonly SignInManager<User> _signInManager;
         public readonly IConfiguration _configuration;
 
-        public UserController (UserManager<User> userManager, SignInManager<User> signInManager, IConfiguration configuration) {
-            this._userManager = userManager;
-            this._signInManager = signInManager;
-            this._configuration = configuration;
+        public AuthController(UserManager<User> userManager,SignInManager<User> signInManager,IConfiguration configuration)
+        {
+            _userManager = userManager;
+            _signInManager = signInManager;
+            _configuration = configuration;
         }
 
         [ValidModel]
