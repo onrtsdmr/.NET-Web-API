@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Model, Product } from '../../models/Model';
 import { ProductService } from 'src/app/services/product.service';
+import { AlertifyService } from 'src/app/services/alertify.service';
 
 @Component({
   selector: 'products',
@@ -13,7 +14,7 @@ export class ProductsComponent implements OnInit {
   categoryName: string;
   selectedProduct: Product;
 
-  constructor(private productService: ProductService)
+  constructor(private productService: ProductService, private alerfiyService: AlertifyService)
   {
 
   }
@@ -45,7 +46,8 @@ export class ProductsComponent implements OnInit {
     this.productService
     .deleteProduct(product)
     .subscribe(p=>{
-      this.products.splice(this.products.findIndex(x=>x.productId == product.productId),1)
+      this.products.splice(this.products.findIndex(x=>x.productId == product.productId),1);
+      this.alerfiyService.error("Product Deleted.")
     });
   }
 }

@@ -1,6 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Product } from '../../models/Model';
 import { ProductService } from '../../services/product.service';
+import { AlertifyService } from 'src/app/services/alertify.service';
 
 @Component({
   selector: 'product-details',
@@ -11,7 +12,7 @@ export class ProductDetailsComponent implements OnInit {
   @Input() product: Product;
   @Input() products: Product[];
 
-  constructor(private productService: ProductService) {}
+  constructor(private productService: ProductService, private alertifyService: AlertifyService) {}
 
   ngOnInit(): void {}
 
@@ -25,7 +26,8 @@ export class ProductDetailsComponent implements OnInit {
     this.productService
       .updateProduct(p)
       .subscribe((result) => {
-        this.products.splice(this.products.findIndex(x=>x.productId==p.productId),1,p)
+        this.products.splice(this.products.findIndex(x=>x.productId==p.productId),1,p);
+        this.alertifyService.success("Product Updated.");
       });
     this.product = null;
   }
