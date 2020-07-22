@@ -9,13 +9,14 @@ import { ProductFormComponent } from './components/product-form/product-form.com
 import { ProductDetailsComponent } from './components/product-details/product-details.component';
 import { FormsModule } from '@angular/forms';
 import { RegisterComponent } from './components/register/register.component';
-import { MemberListComponent } from './components/member-list/member-list.component';
+import { MemberListComponent } from './components/member/member-list/member-list.component';
 import { FriendListComponent } from './components/friend-list/friend-list.component';
 import { HomeComponent } from './components/home/home.component';
 import { MessagesComponent } from './components/messages/messages.component';
 import { NotfoundComponent } from './components/notfound/notfound.component';
 import { ErrorInterceptor } from './services/error.interceptor';
 import { JwtModule } from '@auth0/angular-jwt';
+import { MemberDetailsComponent } from './components/member/member-details/member-details.component';
 
 export function tokenGetter() {
   return localStorage.getItem('token');
@@ -34,6 +35,7 @@ export function tokenGetter() {
     HomeComponent,
     MessagesComponent,
     NotfoundComponent,
+    MemberDetailsComponent,
   ],
   imports: [
     BrowserModule,

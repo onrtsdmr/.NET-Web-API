@@ -4,7 +4,7 @@ import { User } from 'src/app/models/user';
 import { AlertifyService } from 'src/app/services/alertify.service';
 
 @Component({
-  selector: 'app-member-list',
+  selector: 'member-list',
   templateUrl: './member-list.component.html',
   styleUrls: ['./member-list.component.css']
 })
